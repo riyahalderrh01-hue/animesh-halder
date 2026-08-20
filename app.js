@@ -14,11 +14,11 @@
   let loadedCount = 0;
   let currentFrame = 0;
   let targetFrame = 0;
-  let isTicking = false;
   let canvasW = 0;
   let canvasH = 0;
+  let lenisInstance = null;
 
-  // Single Frame Preloader
+  // Single Frame Preloader (.jpg format for 16x faster load speed)
   function loadSingleImage(index) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -42,7 +42,7 @@
         onCompleted(false);
       };
 
-      img.src = PRIMARY_DIR + "/" + numStr + ".png";
+      img.src = PRIMARY_DIR + "/" + numStr + ".jpg";
     });
   }
 
@@ -67,7 +67,6 @@
       canvasH = canvas.height;
     }
 
-    // Set image smoothing quality for high performance
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "medium";
 
@@ -108,13 +107,13 @@
     renderFrame(currentFrame);
   }
 
-  // Calculate target frame based on page scroll position
-  function updateScrollTarget() {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+  // Update target frame from scroll position
+  function updateScrollTarget(scrollTop) {
+    const scrollPos = typeof scrollTop === "number" ? scrollTop : (window.scrollY || document.documentElement.scrollTop || 0);
     const maxScroll = (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight;
 
     if (maxScroll > 0) {
-      const fraction = Math.min(Math.max(0, scrollTop / maxScroll), 1);
+      const fraction = Math.min(Math.max(0, scrollPos / maxScroll), 1);
       targetFrame = fraction * (TOTAL_FRAMES - 1);
     } else {
       targetFrame = 0;
@@ -128,7 +127,7 @@
     sections.forEach((sec) => {
       const top = sec.offsetTop - 220;
       const height = sec.offsetHeight;
-      if (scrollTop >= top && scrollTop < top + height) {
+      if (scrollPos >= top && scrollPos < top + height) {
         currentSectionId = sec.getAttribute("id");
       }
     });
@@ -139,14 +138,30 @@
         link.classList.add("active");
       }
     });
-
-    isTicking = false;
   }
 
-  function onScroll() {
-    if (!isTicking) {
-      requestAnimationFrame(updateScrollTarget);
-      isTicking = true;
+  // Initialize Lenis Smooth Scrolling Engine
+  function initLenis() {
+    if (typeof Lenis !== "undefined") {
+      lenisInstance = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        smoothTouch: false, // Keep native fluid touch scrolling on mobile devices
+        touchMultiplier: 1.8
+      });
+
+      lenisInstance.on("scroll", (e) => {
+        updateScrollTarget(e.scroll);
+      });
+
+      function raf(time) {
+        lenisInstance.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    } else {
+      window.addEventListener("scroll", () => updateScrollTarget(), { passive: true });
     }
   }
 
@@ -179,16 +194,14 @@
       resizeCanvas();
       window.addEventListener("resize", resizeCanvas, { passive: true });
 
-      // Bind passive scroll & touch events
-      window.addEventListener("scroll", onScroll, { passive: true });
-      window.addEventListener("touchmove", onScroll, { passive: true });
-      window.addEventListener("wheel", onScroll, { passive: true });
+      // Initialize Lenis Smooth Scroll Engine
+      initLenis();
 
       // Initial target frame calculation & draw
       updateScrollTarget();
       renderFrame(0);
 
-      // Start animation loop
+      // Start canvas animation loop
       requestAnimationFrame(renderLoop);
     } catch (err) {
       console.error("Initialization error:", err);

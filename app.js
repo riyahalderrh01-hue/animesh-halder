@@ -1,7 +1,6 @@
 (function () {
   const TOTAL_FRAMES = 25;
-  const PRIMARY_DIR = "Video Frame Extractor 2026-08-20 0_25_34 GMT+5_30";
-  const FALLBACK_DIR = "frames";
+  const PRIMARY_DIR = "frames";
 
   // Elements
   const canvas = document.getElementById("hero-canvas");
@@ -19,7 +18,7 @@
   let canvasW = 0;
   let canvasH = 0;
 
-  // Single Frame Preloader with double path fallbacks
+  // Single Frame Preloader
   function loadSingleImage(index) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -39,19 +38,11 @@
       };
 
       img.onerror = () => {
-        const fallbackImg = new Image();
-        fallbackImg.onload = () => {
-          images[index] = fallbackImg;
-          onCompleted(true);
-        };
-        fallbackImg.onerror = () => {
-          console.error("Failed to load frame " + numStr);
-          onCompleted(false);
-        };
-        fallbackImg.src = FALLBACK_DIR + "/" + numStr + ".png";
+        console.error("Failed to load frame " + numStr);
+        onCompleted(false);
       };
 
-      img.src = encodeURI(PRIMARY_DIR + "/" + numStr + ".png");
+      img.src = PRIMARY_DIR + "/" + numStr + ".png";
     });
   }
 
@@ -104,7 +95,7 @@
 
   // Set internal canvas resolution to match viewport & High-DPI screen
   function resizeCanvas() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2x DPR for ultra performance on 4K screens
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -164,7 +155,7 @@
     const diff = targetFrame - currentFrame;
 
     if (Math.abs(diff) > 0.001) {
-      currentFrame += diff * 0.18; // Smooth responsive lerp speed
+      currentFrame += diff * 0.18;
       renderFrame(currentFrame);
     } else if (currentFrame !== targetFrame) {
       currentFrame = targetFrame;
@@ -188,7 +179,7 @@
       resizeCanvas();
       window.addEventListener("resize", resizeCanvas, { passive: true });
 
-      // Bind passive scroll & touch events for lag-free scrolling
+      // Bind passive scroll & touch events
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("touchmove", onScroll, { passive: true });
       window.addEventListener("wheel", onScroll, { passive: true });

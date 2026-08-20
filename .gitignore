@@ -1,8 +1,9 @@
 # Dependencies
 node_modules/
 
-# Zip Archives
+# Zip Archives & Duplicate Raw Extraction Folder
 *.zip
+Video Frame Extractor 2026-08-20 0_25_34 GMT+5_30/
 
 # System & OS Files
 .DS_Store

@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Zip Archives
+*.zip
+
+# System & OS Files
+.DS_Store
+Thumbs.db
+*.log
+
+# Scratch / Temp files
+generate_assets.js

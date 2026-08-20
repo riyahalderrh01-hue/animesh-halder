@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cyan-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#cyan-grad)" />
+  <text x="80" y="270" fill="rgba(255,255,255,0.18)" font-family="sans-serif" font-weight="900" font-size="150">Trava</text>
+  <g transform="translate(310, 45)">
+    <rect x="0" y="0" width="190" height="390" rx="26" fill="#0f172a" stroke="#38bdf8" stroke-width="4" />
+    <rect x="10" y="10" width="170" height="370" rx="18" fill="#0284c7" />
+    <text x="25" y="80" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="17">Savvy traveling</text>
+    <text x="25" y="105" fill="#e0f2fe" font-family="sans-serif" font-weight="bold" font-size="17">starts here.</text>
+    <rect x="25" y="140" width="130" height="38" rx="8" fill="#ffffff" />
+    <text x="45" y="164" fill="#0369a1" font-family="sans-serif" font-weight="bold" font-size="12">Get Started</text>
+  </g>
+</svg>

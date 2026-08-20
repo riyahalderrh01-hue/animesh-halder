@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="lime-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfccb" />
+      <stop offset="100%" stop-color="#3f6212" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#lime-grad)" />
+  <g transform="translate(120, 60)">
+    <rect x="0" y="0" width="560" height="340" rx="12" fill="#ffffff" stroke="#1e293b" stroke-width="8" />
+    <rect x="0" y="0" width="560" height="36" fill="#4d7c0f" />
+    <circle cx="30" cy="18" r="6" fill="#a3e635" />
+    <circle cx="50" cy="18" r="6" fill="#facc15" />
+    <circle cx="70" cy="18" r="6" fill="#ef4444" />
+    <text x="90" y="180" fill="#1a2e05" font-family="sans-serif" font-weight="bold" font-size="26">Hebrew Marketing Agency</text>
+    <rect x="90" y="210" width="170" height="38" rx="6" fill="#65a30d" />
+    <text x="115" y="234" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="14">Explore Services</text>
+  </g>
+</svg>
